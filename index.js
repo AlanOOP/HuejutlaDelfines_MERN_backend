@@ -24,7 +24,7 @@ dotenv.config();
 
 //metodo conexion base de datos
 conectDB();
-
+ 
 //Routing
 app.use("/api", courseRoutes);
 app.use("/api", userRoutes);

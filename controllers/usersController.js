@@ -16,7 +16,7 @@ const getUsers = async (req, res) => {
 }
 
 // Agregar un usuario
-const addUser = async (req, res) => {
+const singIn = async (req, res) => {
 
     console.log(req.body);
     try {
@@ -53,13 +53,17 @@ const addUser = async (req, res) => {
 
 // Login de usuario
 
-const loginUser = async (req, res) => {
+const singUp = async (req, res) => {
+
+    console.log(req.body);
 
     try {
         const { email, password } = req.body;
 
         //Comprobar si el usuario existe
         const userExist = await Users.findOne({ email });
+
+        console.log(userExist);
 
         if (!userExist) {
             const error = new Error("El usuario no existe");
@@ -70,10 +74,10 @@ const loginUser = async (req, res) => {
         const passwordCorrect = bcrypt.compareSync(password, userExist.password);
 
         if (!passwordCorrect) {
-            const error = new Error("La contraseña es incorrecta");
+            const error = new Error("La contraseña no es correcta");
+            
             return res.status(400).json(error);
         }
-
         //Generar JWT
 
         const payload = {
@@ -89,12 +93,12 @@ const loginUser = async (req, res) => {
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: "Server Error" });
+        res.status(500).json({ message: "Hubo un error" });
     }
 }
 
 export {
     getUsers,
-    addUser,
-    loginUser
+    singIn,
+    singUp
 };
