@@ -41,7 +41,7 @@ const userSchema = mongoose.Schema({
         type: String,
         default: "avatar.png"
     }
-});
+}, { timestamps: true });
 
 const Users = mongoose.model('Users', userSchema);
 export default Users;

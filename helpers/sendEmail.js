@@ -61,4 +61,6 @@ export const emailOlvidePassword = async (datos) => {
     
     `,
   });
+
+  console.log(info);
 };

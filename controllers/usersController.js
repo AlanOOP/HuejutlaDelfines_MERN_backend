@@ -21,6 +21,7 @@ const singIn = async (req, res) => {
 
     console.log(req.body);
     try {
+
         const { name, password, age, email, phone } = req.body;
 
         //Comprobar si el usuario existe 
@@ -76,7 +77,6 @@ const singUp = async (req, res) => {
 
         if (!passwordCorrect) {
             const error = new Error("La contraseña no es correcta");
-            
             return res.status(400).json(error);
         }
         //Generar JWT
@@ -137,23 +137,23 @@ const forgotPassword = async (req, res) => {
 
 const resetPassword = async (req, res) => {
 
-    const {  token } = req.params;
+    const { token } = req.params;
     const { password } = req.body;
 
     const user = await Users.findOne({ token });
 
-    try{
-        if(!user){
-            
-            return res.status(400).json({message: "Token no valido"});
+    try {
+        if (!user) {
+
+            return res.status(400).json({ message: "Token no valido" });
         }
         user.password = bcrypt.hashSync(password, 10);
         user.token = '';
         await user.save();
-        res.json({message: "Password actualizado correctamente"});
-    }catch(error){
+        res.json({ message: "Password actualizado correctamente" });
+    } catch (error) {
         console.log(error);
-        res.status(500).json({message: "Hubo un error"});
+        res.status(500).json({ message: "Hubo un error" });
     }
 
 }

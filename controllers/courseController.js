@@ -12,7 +12,7 @@ const deleteImages = (images, mode) => {
 
     for (let i = 0; i < images.length; i++) {
         let filePath = "";
-        if (mode == "file") {
+        if (mode === "file") {
             filePath = basePath + `${images[i].filename}`;
         } else {
             filePath = basePath + `${images[i]}`;
@@ -59,7 +59,7 @@ const getCourse = async (req, res, next) => {
 
 // Create new course
 
-const addCourse = async (req, res, next) => {
+const addCourse = async (req, res) => {
     try {
         const { title, description, category, price, offer } = req.body;
 
@@ -73,7 +73,7 @@ const addCourse = async (req, res, next) => {
             deleteImages(images, "file");
             return res.status(400).json({ message: "Campos Requeridos" });
 
-        } 
+        }
         if (images.length !== 2) {
             deleteImages(images, "file");
             return res.status(400).json({ message: "Se requiere 2 imagenes" });
@@ -107,13 +107,12 @@ const addCourse = async (req, res, next) => {
 
 // Update course
 
-const updateCourse = async (req, res, next) => {
+const updateCourse = async (req, res) => {
     try {
         const { title, description, category, hours, image, price } = req.body;
 
         if (!title || !description || !category || !hours || !image || !price) {
             res.status(400).json({ message: "Campos Requeridos" });
-            next();
         }
 
         const course = await Courses.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -126,7 +125,7 @@ const updateCourse = async (req, res, next) => {
 
 // Desactivate course
 
-const desactivateCourse = async (req, res, next) => {
+const desactivateCourse = async (req, res) => {
     try {
         const course = await Courses.findByIdAndUpdate(req.params.id, { active: false }, { new: true });
         res.json({ message: "Curso Desactivado Correctamente" });
@@ -138,7 +137,7 @@ const desactivateCourse = async (req, res, next) => {
 
 // Activate course
 
-const activateCourse = async (req, res, next) => {
+const activateCourse = async (req, res) => {
     try {
         const course = await Courses.findByIdAndUpdate(req.params.id, { active: true }, { new: true });
         res.json({ message: "Curso Activado Correctamente" });
@@ -148,11 +147,54 @@ const activateCourse = async (req, res, next) => {
     }
 }
 
+
+//buscar curso por nombre 
+
+const searchCourse = async (req, res) => {
+
+    console.log(req.query);
+
+    try {
+        const { title } = req.query;
+        const course = await Courses.find({ title: { $regex: title, $options: "i" } });
+        if (!course) {
+            const error = new Error("No se encontro el curso");
+            return res.status(404).json({ message: error.message });
+        }
+
+        res.json(course);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Server Error" });
+    }
+}
+
+//buscar por categoria , activo o inactivo
+
+const searchCourseCategory = async (req, res) => {
+    try {
+        const { category, active } = req.query;
+        const course = await Courses.find({ category: category, active: active });
+        if (!course) {
+            const error = new Error("No se encontro el curso");
+            return res.status(404).json({ message: error.message });
+        }
+
+        res.json(course);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Server Error" });
+    }
+}
+
+
 export {
     getCourses,
     getCourse,
     addCourse,
     updateCourse,
     desactivateCourse,
-    activateCourse
+    activateCourse,
+    searchCourse,
+    searchCourseCategory
 };
