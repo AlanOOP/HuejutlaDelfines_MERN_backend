@@ -29,6 +29,8 @@ export const emailRegistro = async (datos) => {
     
     `,
   });
+
+  console.log(info);
 };
 
 export const emailOlvidePassword = async (datos) => {

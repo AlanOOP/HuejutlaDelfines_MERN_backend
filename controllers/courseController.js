@@ -115,7 +115,7 @@ const updateCourse = async (req, res) => {
             res.status(400).json({ message: "Campos Requeridos" });
         }
 
-        const course = await Courses.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        await Courses.findByIdAndUpdate(req.params.id, req.body, { new: true });
         res.json({ message: "Curso Actualizado Correctamente" });
     } catch (error) {
         console.log(error);
@@ -127,7 +127,7 @@ const updateCourse = async (req, res) => {
 
 const desactivateCourse = async (req, res) => {
     try {
-        const course = await Courses.findByIdAndUpdate(req.params.id, { active: false }, { new: true });
+        await Courses.findByIdAndUpdate(req.params.id, { active: false }, { new: true });
         res.json({ message: "Curso Desactivado Correctamente" });
     } catch (error) {
         console.log(error);
@@ -139,7 +139,7 @@ const desactivateCourse = async (req, res) => {
 
 const activateCourse = async (req, res) => {
     try {
-        const course = await Courses.findByIdAndUpdate(req.params.id, { active: true }, { new: true });
+        await Courses.findByIdAndUpdate(req.params.id, { active: true }, { new: true });
         res.json({ message: "Curso Activado Correctamente" });
     } catch (error) {
         console.log(error);
