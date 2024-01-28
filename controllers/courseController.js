@@ -172,6 +172,9 @@ const searchCourse = async (req, res) => {
 //buscar por categoria , activo o inactivo
 
 const searchCourseCategory = async (req, res) => {
+
+    console.log(req.query);
+
     try {
         const { category, active } = req.query;
         const course = await Courses.find({ category: category, active: active });

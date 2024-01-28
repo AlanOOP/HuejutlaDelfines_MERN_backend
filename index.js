@@ -16,9 +16,21 @@ app.use(express.json());
 
 app.use(express.static("public"));
 
-// Configurar CORS
+//whitelist
 
-app.use(cors());
+const whitelist = [];
+const corsOptions = {
+    origin: (origin, callback) => {
+        if (whitelist.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("No permitido por CORS"));
+        }
+    },
+};
+
+// Configurar CORS
+app.use(cors(corsOptions));
 
 dotenv.config();
 

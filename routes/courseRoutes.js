@@ -9,7 +9,8 @@ import {
     updateCourse,
     activateCourse,
     desactivateCourse,
-    searchCourse
+    searchCourse,
+    searchCourseCategory
 } from '../controllers/courseController.js';
 
 const router = express.Router();
@@ -35,5 +36,6 @@ router.put('/courses/activate/:id', activateCourse);
 router.put('/courses/desactivate/:id', desactivateCourse);
 //request query
 router.post('/courses/search', searchCourse);
+router.post('/courses/search/category', searchCourseCategory);
 
 export default router;

@@ -111,7 +111,6 @@ const forgotPassword = async (req, res) => {
             const error = new Error("El usuario no existe");
             return res.status(400).json({ message: error.message });
         }
-
         //Generar token
         user.token = generateToken();
         await user.save();
