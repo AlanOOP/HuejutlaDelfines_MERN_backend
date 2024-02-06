@@ -22,7 +22,7 @@ const singIn = async (req, res) => {
     console.log(req.body);
     try {
 
-        const { name, password, age, email, phone } = req.body;
+        const { name , lastName, password, age, email, phone } = req.body;
 
         //Comprobar si el usuario existe 
         const userExist = await Users.findOne({ email });
@@ -30,12 +30,13 @@ const singIn = async (req, res) => {
         if (userExist) {
             return res.status(400).json({ message: "El usuario ya existe" });
         }
-        if (!name || !password || !email || !phone || !age) {
+        if (!name || !password || !email || !phone || !age || !lastName) {
             return res.status(400).json({ message: "Campos Requeridos " });
         }
 
         const user = new Users({
             name,
+            lastName,
             password,
             age,
             email,
@@ -57,7 +58,7 @@ const singIn = async (req, res) => {
 
 const singUp = async (req, res) => {
 
-    console.log(req.body);
+    
 
     try {
         const { email, password } = req.body;
@@ -65,11 +66,14 @@ const singUp = async (req, res) => {
         //Comprobar si el usuario existe
         const userExist = await Users.findOne({ email });
 
-        console.log(userExist);
-
         if (!userExist) {
             const error = new Error("El usuario no existe");
-            return res.status(400).json(error);
+            return res.status(400).json(error.message);
+        }
+
+        if(!userExist.confirm){
+            const error = new Error("El usuario no esta confirmado");
+            return res.status(400).json(error.message);
         }
 
         //Comprobar si la contraseña es correcta
