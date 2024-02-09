@@ -32,20 +32,19 @@ const whitelist = [process.env.FRONTEND_URL];
 
 const corsOptions = {
     origin: function (origin, callback) {
-      if (whitelist.includes(origin)) {
-        // Puede consultar la API
-        callback(null, true);
-      } else {
-        // No esta permitido
-        callback(new Error("Error de Cors"));
-      }
+        if (whitelist.includes(origin)) {
+            // Puede consultar la API
+            callback(null, true);
+        } else {
+            // No esta permitido
+            callback(new Error("Error de Cors"));
+        }
     },
-  };
+};
 
 
 // Configurar CORS
-app.use(cors(corsOptions));
-
+app.use(cors())
 
 
 //metodo conexion base de datos

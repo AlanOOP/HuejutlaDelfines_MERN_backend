@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import Users from "../models/Users.js";
 import { generateToken } from "../helpers/generateToken.js";
 import generarJWT from "../helpers/generateJWT.js";
-import { emailOlvidePassword } from "../helpers/sendEmail.js";
+import { emailRegistro, emailOlvidePassword } from "../helpers/sendEmail.js";
 
 
 // Obtener todos los usuarios
@@ -19,10 +19,9 @@ const getUsers = async (req, res) => {
 // Agregar un usuario
 const singIn = async (req, res) => {
 
-    console.log(req.body);
     try {
 
-        const { name , lastName, password, age, email, phone } = req.body;
+        const { name, lastName, password, age, email, phone } = req.body;
 
         //Comprobar si el usuario existe 
         const userExist = await Users.findOne({ email });
@@ -45,6 +44,16 @@ const singIn = async (req, res) => {
 
         user.token = generateToken();
         user.password = bcrypt.hashSync(password, 10);
+
+        //Enviar email
+        const datos = {
+            email: user.email,
+            nombre: user.name,
+            token: user.token,
+        };
+
+        await emailRegistro(datos);
+
         await user.save();
         res.json({ message: "Usuario creado correctamente" });
 
@@ -54,15 +63,35 @@ const singIn = async (req, res) => {
     }
 };
 
+//confirmar usuario
+
+const confirmar = async (req, res) => {
+    const { token } = req.params;
+
+    console.log(token);
+
+    const user = await Users.findOne({
+        token
+    });
+
+    if (!user) {
+        return res.status(400).json({ message: "Token no valido" });
+    }
+
+    user.confirm = true;
+    user.token = '';
+    await user.save();
+
+    res.json({ message: "Usuario confirmado correctamente" });
+}
+
+
 // Login de usuario
 
 const singUp = async (req, res) => {
-
-    
+    const { email, password } = req.body;
 
     try {
-        const { email, password } = req.body;
-
         //Comprobar si el usuario existe
         const userExist = await Users.findOne({ email });
 
@@ -71,7 +100,7 @@ const singUp = async (req, res) => {
             return res.status(400).json(error.message);
         }
 
-        if(!userExist.confirm){
+        if (!userExist.confirm) {
             const error = new Error("El usuario no esta confirmado");
             return res.status(400).json(error.message);
         }
@@ -167,5 +196,6 @@ export {
     singIn,
     singUp,
     forgotPassword,
-    resetPassword
+    resetPassword,
+    confirmar
 };

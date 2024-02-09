@@ -13,8 +13,7 @@ export const emailRegistro = async (datos) => {
   });
 
   // Información del email
-
-  const info = await transport.sendMail({
+  await transport.sendMail({
     from: '"Huejutla Delfines - Escuela de Natación" <cuentas@huejutladelfines.com>',
     to: email,
     subject: "Huejutla Delfines - Comprueba tu cuenta",
@@ -30,7 +29,6 @@ export const emailRegistro = async (datos) => {
     `,
   });
 
-  console.log(info);
 };
 
 export const emailOlvidePassword = async (datos) => {
