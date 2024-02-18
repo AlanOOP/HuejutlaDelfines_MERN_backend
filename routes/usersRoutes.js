@@ -5,7 +5,8 @@ import {
     singIn,
     forgotPassword,
     resetPassword,
-    confirmar
+    confirmar,
+    verifyOTP
 } from '../controllers/usersController.js';
 
 const router = express.Router();
@@ -16,5 +17,6 @@ router.post('/singIn', singIn);
 router.post("/olvide-password", forgotPassword);
 router.post("/olvide-password/:token", resetPassword);
 router.get("/confirm/:token", confirmar);
+router.post("/otp-verification", verifyOTP);
 
 export default router;

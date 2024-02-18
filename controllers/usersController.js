@@ -2,8 +2,8 @@ import bcrypt from "bcrypt";
 import Users from "../models/Users.js";
 import { generateToken } from "../helpers/generateToken.js";
 import generarJWT from "../helpers/generateJWT.js";
-import { emailRegistro, emailOlvidePassword } from "../helpers/sendEmail.js";
-
+import { generateOTP } from "../helpers/generateOTP.js";
+import { emailRegistro, emailOlvidePassword, userAttemps, adminAttemps } from "../helpers/sendEmail.js";
 
 // Obtener todos los usuarios
 const getUsers = async (req, res) => {
@@ -18,9 +18,7 @@ const getUsers = async (req, res) => {
 
 // Agregar un usuario
 const singIn = async (req, res) => {
-
     try {
-
         const { name, lastName, password, age, email, phone } = req.body;
 
         //Comprobar si el usuario existe 
@@ -33,6 +31,7 @@ const singIn = async (req, res) => {
             return res.status(400).json({ message: "Campos Requeridos " });
         }
 
+
         const user = new Users({
             name,
             lastName,
@@ -42,14 +41,17 @@ const singIn = async (req, res) => {
             phone
         });
 
+        const codeOTP = generateOTP();
         user.token = generateToken();
         user.password = bcrypt.hashSync(password, 10);
+        user.codeOTP = codeOTP;
 
         //Enviar email
         const datos = {
             email: user.email,
             nombre: user.name,
             token: user.token,
+            codeOTP: user.codeOTP,
         };
 
         await emailRegistro(datos);
@@ -67,9 +69,6 @@ const singIn = async (req, res) => {
 
 const confirmar = async (req, res) => {
     const { token } = req.params;
-
-    console.log(token);
-
     const user = await Users.findOne({
         token
     });
@@ -79,11 +78,37 @@ const confirmar = async (req, res) => {
     }
 
     user.confirm = true;
-    user.token = '';
     await user.save();
 
     res.json({ message: "Usuario confirmado correctamente" });
 }
+
+const verifyOTP = async (req, res) => {
+
+    const { token, codeOTP } = req.body;
+
+    const user = await Users.findOne({ token });
+
+    if (!user) {
+        const error = new Error("El usuario no existe");
+        return res.status(400).json(error.message);
+    }
+
+    if (user.codeOTP !== codeOTP) {
+        const error = new Error("El codigo no es valido");
+        return res.status(400).json(error.message);
+    }
+
+    user.confirm = true;
+    user.codeOTP = '';
+    user.token = '';
+    await user.save();
+
+    res.json({ message: "Usuario confirmado correctamente" });
+
+}
+
+
 
 
 // Login de usuario
@@ -105,13 +130,44 @@ const singUp = async (req, res) => {
             return res.status(400).json(error.message);
         }
 
+        // if (userExist.blockExpires > Date.now()) {
+        // //     userExist.isBlocked = false;
+        // // }
+
+        //comprobar si el usuarios esta bloqueado 
+
+        if (userExist.isBlocked) {
+            const error = new Error("El usuario esta bloqueado");
+            return res.status(400).json(error.message);
+        }
+
+
         //Comprobar si la contraseña es correcta
         const passwordCorrect = bcrypt.compareSync(password, userExist.password);
 
         if (!passwordCorrect) {
+            userExist.loginAttempts += 1;
+            if (userExist.loginAttempts >= 5) {
+                userExist.isBlocked = true;
+                userExist.blockExpires = new Date(Date.now() + 60 * 60 * 1000);
+
+                const datos = {
+                    email: userExist.email,
+                    nombre: userExist.name,
+                    attemps: userExist.loginAttempts,
+                };
+
+                await userAttemps(datos);
+                await adminAttemps(datos);
+            }
+            await userExist.save();
             const error = new Error("La contraseña no es correcta");
-            return res.status(400).json(error);
+            return res.status(400).json(error.message);
         }
+
+        userExist.loginAttempts = 0;
+        userExist.isBlocked = false;
+
         //Generar JWT
 
         const payload = {
@@ -176,7 +232,6 @@ const resetPassword = async (req, res) => {
 
     try {
         if (!user) {
-
             return res.status(400).json({ message: "Token no valido" });
         }
         user.password = bcrypt.hashSync(password, 10);
@@ -190,12 +245,12 @@ const resetPassword = async (req, res) => {
 
 }
 
-
 export {
     getUsers,
     singIn,
     singUp,
     forgotPassword,
     resetPassword,
-    confirmar
+    confirmar,
+    verifyOTP
 };

@@ -6,7 +6,7 @@ import path, { dirname } from "path";
 // Get all courses
 
 const deleteImages = (images, mode) => {
-
+    
     const __dirname = dirname(fileURLToPath(import.meta.url));
     let basePath = path.resolve(__dirname + "../../") + "/public/uploads/";
 
@@ -72,7 +72,6 @@ const addCourse = async (req, res) => {
         if (!title || !description || !category || !images || !price || !offer) {
             deleteImages(images, "file");
             return res.status(400).json({ message: "Campos Requeridos" });
-
         }
         if (images.length !== 2) {
             deleteImages(images, "file");
@@ -110,11 +109,9 @@ const addCourse = async (req, res) => {
 const updateCourse = async (req, res) => {
     try {
         const { title, description, category, hours, image, price } = req.body;
-
         if (!title || !description || !category || !hours || !image || !price) {
             res.status(400).json({ message: "Campos Requeridos" });
         }
-
         await Courses.findByIdAndUpdate(req.params.id, req.body, { new: true });
         res.json({ message: "Curso Actualizado Correctamente" });
     } catch (error) {
@@ -182,7 +179,6 @@ const searchCourseCategory = async (req, res) => {
             const error = new Error("No se encontro el curso");
             return res.status(404).json({ message: error.message });
         }
-
         res.json(course);
     } catch (error) {
         console.log(error);

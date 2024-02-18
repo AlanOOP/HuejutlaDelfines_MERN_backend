@@ -6,7 +6,7 @@ const userSchema = mongoose.Schema({
         required: true,
         trim: true
     },
-    lastName:{
+    lastName: {
         type: String,
         required: true,
         trim: true
@@ -42,10 +42,26 @@ const userSchema = mongoose.Schema({
         type: Number,
         default: 0
     },
+    codeOTP: {
+        type: String,
+    },
     avatar: {
         type: String,
         default: "avatar.png"
+    },
+    loginAttempts: {
+        type: Number,
+        default: 0
+    },
+    isBlocked: {
+        type: Boolean,
+        default: false
+    },
+    blockExpires: {
+        type: Date,
+        default: Date.now
     }
+
 }, { timestamps: true });
 
 const Users = mongoose.model('Users', userSchema);
