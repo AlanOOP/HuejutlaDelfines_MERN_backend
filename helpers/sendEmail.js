@@ -16,7 +16,7 @@ export const emailRegistro = async (datos) => {
 
   // Información del email, codigo otp para confirmar el correo
 
-  const info = await transport.sendMail({
+  await transport.sendMail({
     from: '"Huejutla Delfines - Escuela de Natación"',
     to: email,
     subject: "Huejutla Delfines - Confirma tu correo",
@@ -87,7 +87,7 @@ export const emailOlvidePassword = async (datos) => {
 
   // Información del email
 
-  const info = await transport.sendMail({
+  await transport.sendMail({
     from: '"Huejutla Delfines - Escuela de Natación" <cuentas@huejutladelfines.com>',
     to: email,
     subject: "Huejutla Delfines - Reestablece tu Password",
@@ -102,7 +102,7 @@ export const emailOlvidePassword = async (datos) => {
     `,
   });
 
-  console.log(info);
+  // console.log(info);
 };
 
 export const userAttemps = async (datos) => {
