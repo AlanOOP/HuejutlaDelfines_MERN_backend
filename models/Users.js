@@ -1,33 +1,15 @@
 import mongoose from "mongoose";
 
 const userSchema = mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    lastName: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    password: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    age: {
-        type: String,
-        trim: true
-    },
     email: {
         type: String,
         required: true,
         trim: true,
         unique: true
     },
-    phone: {
+    password: {
         type: String,
+        required: true,
         trim: true
     },
     token: {
@@ -61,7 +43,6 @@ const userSchema = mongoose.Schema({
         type: Date,
         default: Date.now
     }
-
 }, { timestamps: true });
 
 const Users = mongoose.model('Users', userSchema);

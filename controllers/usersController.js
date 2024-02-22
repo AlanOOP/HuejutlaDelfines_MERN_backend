@@ -109,8 +109,6 @@ const verifyOTP = async (req, res) => {
 }
 
 
-
-
 // Login de usuario
 
 const singUp = async (req, res) => {
@@ -160,6 +158,7 @@ const singUp = async (req, res) => {
                 await userAttemps(datos);
                 await adminAttemps(datos);
             }
+            
             await userExist.save();
             const error = new Error("La contraseña no es correcta");
             return res.status(400).json(error.message);
