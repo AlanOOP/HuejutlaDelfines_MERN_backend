@@ -13,5 +13,9 @@ const registrationSchema = mongoose.Schema({
         type: Date,
         default: Date.now
     }
+    
 }, { timestamps: true }
 );
+
+const Registrations = mongoose.model("Registrations", registrationSchema);
+export default Registrations;

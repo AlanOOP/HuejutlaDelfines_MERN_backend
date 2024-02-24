@@ -25,6 +25,10 @@ const instructorSchema = mongoose.Schema({
         required: true,
         trim: true
     },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Users'
+    }
 }, { timestamps: true });
 
 const Instructor = mongoose.model('Instructor', instructorSchema);

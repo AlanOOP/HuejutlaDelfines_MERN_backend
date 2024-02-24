@@ -10,6 +10,7 @@ import { dirname } from 'path';
 //routes 
 import courseRoutes from "./routes/courseRoutes.js"
 import userRoutes from "./routes/usersRoutes.js"
+import instructorRoutes from "./routes/instructorRoutes.js"
 
 const app = express();
 
@@ -53,6 +54,7 @@ conectDB();
 //Routing
 app.use("/api", courseRoutes);
 app.use("/api", userRoutes);
+app.use("/api", instructorRoutes);
 
 const PORT = process.env.PORT || 3000;
 

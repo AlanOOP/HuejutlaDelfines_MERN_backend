@@ -19,4 +19,11 @@ const studentSchema = mongoose.Schema({
         type: String,
         trim: true
     },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Users"
+    }
 })
+
+const Student = mongoose.model('Student', studentSchema);
+export default Student;

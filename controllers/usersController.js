@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import Users from "../models/Users.js";
+import Student from "../models/Student.js";
 import { generateToken } from "../helpers/generateToken.js";
 import generarJWT from "../helpers/generateJWT.js";
 import { generateOTP } from "../helpers/generateOTP.js";
@@ -18,6 +19,7 @@ const getUsers = async (req, res) => {
 
 // Agregar un usuario
 const singIn = async (req, res) => {
+
     try {
         const { name, lastName, password, age, email, phone } = req.body;
 
@@ -33,12 +35,8 @@ const singIn = async (req, res) => {
 
 
         const user = new Users({
-            name,
-            lastName,
             password,
-            age,
             email,
-            phone
         });
 
         const codeOTP = generateOTP();
@@ -46,10 +44,20 @@ const singIn = async (req, res) => {
         user.password = bcrypt.hashSync(password, 10);
         user.codeOTP = codeOTP;
 
+        const student = new Student({
+            name,
+            lastName,
+            age,
+            phone,
+            user: user._id,
+        });
+
+        await student.save();
+
         //Enviar email
         const datos = {
             email: user.email,
-            nombre: user.name,
+            nombre: student.name,
             token: user.token,
             codeOTP: user.codeOTP,
         };
@@ -60,7 +68,7 @@ const singIn = async (req, res) => {
         res.json({ message: "Usuario creado correctamente" });
 
     } catch (error) {
-        // console.log(error);
+        console.log(error);
         res.status(500).json({ message: "Server Error" });
     }
 };
@@ -158,7 +166,7 @@ const singUp = async (req, res) => {
                 await userAttemps(datos);
                 await adminAttemps(datos);
             }
-            
+
             await userExist.save();
             const error = new Error("La contraseña no es correcta");
             return res.status(400).json(error.message);
