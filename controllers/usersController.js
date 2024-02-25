@@ -11,7 +11,7 @@ const getUsers = async (req, res) => {
         const users = await Users.find();
         res.json(users);
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({ message: "Server Error" });
     }
 }
@@ -60,7 +60,7 @@ const singIn = async (req, res) => {
         res.json({ message: "Usuario creado correctamente" });
 
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({ message: "Server Error" });
     }
 };
@@ -182,7 +182,7 @@ const singUp = async (req, res) => {
         await res.json(payload);
 
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({ message: "Hubo un error" });
     }
 }
@@ -190,7 +190,7 @@ const singUp = async (req, res) => {
 //olvide password 
 
 const forgotPassword = async (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
     try {
         const { email } = req.body;
         //Comprobar si el usuario existe
@@ -217,7 +217,7 @@ const forgotPassword = async (req, res) => {
 
 
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({ message: "Hubo un error" });
     }
 
@@ -239,7 +239,7 @@ const resetPassword = async (req, res) => {
         await user.save();
         res.json({ message: "Password actualizado correctamente" });
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({ message: "Hubo un error" });
     }
 

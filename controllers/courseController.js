@@ -19,7 +19,7 @@ const deleteImages = (images, mode) => {
         }
         console.log(filePath);
         if (fs.existsSync(filePath)) {
-            console.log("Exists image");
+            // console.log("Exists image");
         }
         fs.unlink(filePath, (err) => {
             if (err) {
@@ -34,7 +34,7 @@ const getCourses = async (req, res) => {
         const courses = await Courses.find();
         res.json(courses);
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({ message: "Server Error" });
     }
 }
@@ -52,7 +52,7 @@ const getCourse = async (req, res, next) => {
         res.json(course);
 
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({ message: "Server Error" });
     }
 }
@@ -99,7 +99,7 @@ const addCourse = async (req, res) => {
         await course.save();
         res.json({ message: "Course created successfully" });
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({ message: "Server Error" });
     }
 }
@@ -115,7 +115,7 @@ const updateCourse = async (req, res) => {
         await Courses.findByIdAndUpdate(req.params.id, req.body, { new: true });
         res.json({ message: "Curso Actualizado Correctamente" });
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({ message: "Server Error" });
     }
 }
@@ -127,7 +127,7 @@ const desactivateCourse = async (req, res) => {
         await Courses.findByIdAndUpdate(req.params.id, { active: false }, { new: true });
         res.json({ message: "Curso Desactivado Correctamente" });
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({ message: "Server Error" });
     }
 }
@@ -139,7 +139,7 @@ const activateCourse = async (req, res) => {
         await Courses.findByIdAndUpdate(req.params.id, { active: true }, { new: true });
         res.json({ message: "Curso Activado Correctamente" });
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({ message: "Server Error" });
     }
 }
@@ -149,7 +149,7 @@ const activateCourse = async (req, res) => {
 
 const searchCourse = async (req, res) => {
 
-    console.log(req.query);
+    // console.log(req.query);
 
     try {
         const { title } = req.query;
@@ -161,7 +161,7 @@ const searchCourse = async (req, res) => {
 
         res.json(course);
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({ message: "Server Error" });
     }
 }
@@ -170,7 +170,7 @@ const searchCourse = async (req, res) => {
 
 const searchCourseCategory = async (req, res) => {
 
-    console.log(req.query);
+    // console.log(req.query);
 
     try {
         const { category, active } = req.query;
@@ -181,7 +181,7 @@ const searchCourseCategory = async (req, res) => {
         }
         res.json(course);
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({ message: "Server Error" });
     }
 }

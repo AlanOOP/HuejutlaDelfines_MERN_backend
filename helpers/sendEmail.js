@@ -39,26 +39,26 @@ export const emailRegistro = async (datos) => {
 
     <body>
 
-        <header class="flex justify-center items-center bg-gradient-to-r from-cyan-400 to-blue-500">
+        <header className="flex justify-center items-center bg-gradient-to-r from-cyan-400 to-blue-500">
             
             <div>
-                <h1 class="my-10 text-white text-3xl font-bold">Huejutla Delfines</h1>
+                <h1 className="my-10 text-white text-3xl font-bold">Huejutla Delfines</h1>
             </div>
         </header>
 
-        <main class="bg-gradient-to-r from-cyan-400 to-blue-500">
-            <section class="flex flex-col container mx-auto justify-center items-center text-center pb-5">
-                <h2 class="text-center text-white text-3xl font-bold my-5">
+        <main className="bg-gradient-to-r from-cyan-400 to-blue-500">
+            <section className="flex flex-col container mx-auto justify-center items-center text-center pb-5">
+                <h2 className="text-center text-white text-3xl font-bold my-5">
                     Hola Alan Alexis, Has solicitado confirmar tu correo
                 </h2>
 
-                <div class="text-2xl font-bold">
+                <div className="text-2xl font-bold">
                     <p>El código de confirmación es: </p>
-                    <p class="text-5xl font-extrabold my-5 text-slate-200"> ${codeOTP}</p>
+                    <p className="text-5xl font-extrabold my-5 text-slate-200"> ${codeOTP}</p>
                     <p>Da click el siguiente enlace para confirmar tu correo: </p>
-                    <div class="my-10">
+                    <div className="my-10">
                         <a href="${process.env.FRONTEND_URL}/confirmar/${token}"
-                            class="py-5 bg-yellow-400 hover:bg-yellow-500 cursor-pointer my-10 px-2 rounded-sm">Confirmar
+                            className="py-5 bg-yellow-400 hover:bg-yellow-500 cursor-pointer my-10 px-2 rounded-sm">Confirmar
                             Correo</a>
                     </div>
 
