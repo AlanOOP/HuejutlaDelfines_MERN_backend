@@ -2,6 +2,7 @@ import { fileURLToPath } from 'url';
 import Courses from "../models/Courses.js";
 import fs from "fs";
 import path, { dirname } from "path";
+import Instructor from '../models/Instructor.js';
 
 // Get all courses
 
@@ -19,7 +20,7 @@ const deleteImages = (images, mode) => {
         }
         console.log(filePath);
         if (fs.existsSync(filePath)) {
-            console.log("Exists image");
+            console.log("existe");
         }
         fs.unlink(filePath, (err) => {
             if (err) {
@@ -31,7 +32,7 @@ const deleteImages = (images, mode) => {
 
 const getCourses = async (req, res) => {
     try {
-        const courses = await Courses.find();
+        const courses = await Courses.find().populate("instructor" );
         res.json(courses);
     } catch (error) {
         // console.log(error);
@@ -47,9 +48,8 @@ const getCourse = async (req, res, next) => {
 
         if (!course) {
             res.status(404).json({ message: "Course not found" });
-            next();
         }
-        res.json(course);
+        return res.json(course);
 
     } catch (error) {
         // console.log(error);
@@ -61,13 +61,15 @@ const getCourse = async (req, res, next) => {
 
 const addCourse = async (req, res) => {
     try {
-        const { title, description, category, price, offer } = req.body;
+        const { title, description, category, price, offer, instructor, cupos } = req.body;
+
+        console.log(req.body);
 
         let images = req.files;
         // console.log(req.files);
 
         // console.log(title);
-        // console.log(images);
+        console.log(images);
 
         if (!title || !description || !category || !images || !price || !offer) {
             deleteImages(images, "file");
@@ -76,6 +78,14 @@ const addCourse = async (req, res) => {
         if (images.length !== 2) {
             deleteImages(images, "file");
             return res.status(400).json({ message: "Se requiere 2 imagenes" });
+        }
+
+        const existInstructor = await Instructor.findById(instructor);
+
+        if(!existInstructor){
+            deleteImages(images, "file");
+            const error = new Error("Instructor no encontrado");
+            return res.status(404).json( error.message );
         }
 
         let allImages = [];
@@ -92,7 +102,9 @@ const addCourse = async (req, res) => {
                 image: allImages,
                 price,
                 offer,
-                active: true
+                active: true,
+                instructor,
+                cupos
             }
         );
 

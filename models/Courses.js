@@ -28,12 +28,6 @@ const coursesSchema = mongoose.Schema({
         type: Boolean,
         default: true
     },
-    students: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Users'
-        }
-    ],
     instructor: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Instructor'
@@ -41,7 +35,7 @@ const coursesSchema = mongoose.Schema({
     cupos: {
         type: Number,
         default: 0
-    },
+    }
 }, { timestamps: true });
 
 const Courses = mongoose.model('Courses', coursesSchema);

@@ -17,6 +17,14 @@ const getUsers = async (req, res) => {
     }
 }
 
+// Obtener un usuario por jwt
+
+const getProfile = async (req, res) => {
+    const { user } = req;
+    res.json(user);
+}
+
+
 // Agregar un usuario
 const singIn = async (req, res) => {
 
@@ -259,5 +267,6 @@ export {
     forgotPassword,
     resetPassword,
     confirmar,
-    verifyOTP
+    verifyOTP,
+    getProfile
 };
