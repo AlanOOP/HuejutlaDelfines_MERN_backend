@@ -19,7 +19,6 @@ const getInstructors = async (req, res) => {
         req.ips ||
         req.hostname || 'unknown';
 
-    console.log({ ip });
 
     try {
         const instructors = await Instructor.find().populate('user');
