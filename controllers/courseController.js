@@ -18,8 +18,9 @@ const deleteImages = (images, mode) => {
         } else {
             filePath = basePath + `${images[i]}`;
         }
-        console.log(filePath);
+        // console.log(filePath);
         if (fs.existsSync(filePath)) {
+            // console.log("Exists image");
             console.log("existe");
         }
         fs.unlink(filePath, (err) => {
