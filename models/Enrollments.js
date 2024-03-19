@@ -17,5 +17,13 @@ const enrollmentsSchema = mongoose.Schema({
         type: String,
         default: 'pending'
     },
-    
+    total: {
+        type: Number,
+        default: 0
+    },
+
 }, { timestamps: true });
+
+const Enrollments = mongoose.model('Enrollments', enrollmentsSchema);
+
+export default Enrollments;

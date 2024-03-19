@@ -2,10 +2,25 @@ import Instructor from "../models/Instructor.js";
 import { generateToken } from "../helpers/generateToken.js";
 import bcrypt from "bcrypt";
 import Users from "../models/Users.js";
-
+import http from "http";
 // Obtener todos los instructores
 
 const getInstructors = async (req, res) => {
+
+    const ip =
+        req.headers['cf-connecting-ip'] ||
+        req.headers['x-real-ip'] ||
+        req.headers['x-forwarded-for'] ||
+        req.connection.remoteAddress ||
+        req.socket.remoteAddress ||
+        req.connection.socket.remoteAddress ||
+        req.ip ||
+        req.ips[0] ||
+        req.ips ||
+        req.hostname || 'unknown';
+
+    console.log({ ip });
+
     try {
         const instructors = await Instructor.find().populate('user');
         res.json(instructors);

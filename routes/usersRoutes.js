@@ -8,7 +8,8 @@ import {
     resetPassword,
     confirmar,
     verifyOTP,
-    getProfile
+    getProfile,
+    getUserProfile
 } from '../controllers/usersController.js';
 
 const router = express.Router();
@@ -21,5 +22,6 @@ router.post("/olvide-password/:token", resetPassword);
 router.get("/confirm/:token", confirmar);
 router.post("/otp-verification", verifyOTP);
 router.get("/user/profile", checkAuth, getProfile);
+router.get("/user", getUserProfile);
 
 export default router;

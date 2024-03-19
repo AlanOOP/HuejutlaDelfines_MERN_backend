@@ -7,7 +7,7 @@ import Instructor from '../models/Instructor.js';
 // Get all courses
 
 const deleteImages = (images, mode) => {
-    
+
     const __dirname = dirname(fileURLToPath(import.meta.url));
     let basePath = path.resolve(__dirname + "../../") + "/public/uploads/";
 
@@ -32,7 +32,7 @@ const deleteImages = (images, mode) => {
 
 const getCourses = async (req, res) => {
     try {
-        const courses = await Courses.find().populate("instructor" );
+        const courses = await Courses.find().populate("instructor");
         res.json(courses);
     } catch (error) {
         // console.log(error);
@@ -82,10 +82,10 @@ const addCourse = async (req, res) => {
 
         const existInstructor = await Instructor.findById(instructor);
 
-        if(!existInstructor){
+        if (!existInstructor) {
             deleteImages(images, "file");
             const error = new Error("Instructor no encontrado");
-            return res.status(404).json( error.message );
+            return res.status(404).json(error.message);
         }
 
         let allImages = [];

@@ -5,9 +5,15 @@ import { generateToken } from "../helpers/generateToken.js";
 import generarJWT from "../helpers/generateJWT.js";
 import { generateOTP } from "../helpers/generateOTP.js";
 import { emailRegistro, emailOlvidePassword, userAttemps, adminAttemps } from "../helpers/sendEmail.js";
+import jwt from "jsonwebtoken";
 
 // Obtener todos los usuarios
 const getUsers = async (req, res) => {
+
+    //obetner ip y el navegador session
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    const session = req.headers['user-agent'];
+
     try {
         const users = await Users.find();
         res.json(users);
@@ -21,9 +27,26 @@ const getUsers = async (req, res) => {
 
 const getProfile = async (req, res) => {
     const { user } = req;
-    res.json(user);
+    console.log(user.id);
+    res.json({ user });
 }
 
+
+// Obtener un usuario por id y buscar estudiante populate user 
+
+const getUserProfile = async (req, res) => {
+    const { id } = req.body;
+    try {
+        const studentExist = await Student.findOne({ user: id }).populate('user');
+        if (!studentExist) {
+            const error = new Error("El usuario no existe");
+            return res.status(400).json(error.message);
+        }
+        res.json(studentExist);
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 // Agregar un usuario
 const singIn = async (req, res) => {
@@ -185,14 +208,19 @@ const singUp = async (req, res) => {
 
         //Generar JWT
 
+        const token = generarJWT(userExist.id);
+
         const payload = {
             user: {
                 id: userExist.id,
                 name: userExist.name,
                 email: userExist.email,
-                token: generarJWT(userExist.id),
+                token: token
             },
         };
+
+        const encode = jwt.verify(token, process.env.JWT_SECRET);
+
 
         await res.json(payload);
 
@@ -268,5 +296,6 @@ export {
     resetPassword,
     confirmar,
     verifyOTP,
-    getProfile
+    getProfile,
+    getUserProfile
 };
