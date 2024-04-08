@@ -22,6 +22,6 @@ router.post("/olvide-password/:token", resetPassword);
 router.get("/confirm/:token", confirmar);
 router.post("/otp-verification", verifyOTP);
 router.get("/user/profile", checkAuth, getProfile);
-router.get("/user", getUserProfile);
+router.get("/user/:id", getUserProfile);
 
 export default router;

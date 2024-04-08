@@ -1,26 +1,34 @@
 import mongoose from "mongoose";
 
 const enrollmentsSchema = mongoose.Schema({
-    enrrollentDate: {
-        type: String,
-        default: Date.now
-    },
-    user: {
+
+    student:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'Student'
     },
-    course: {
+    course:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Courses'
     },
-    status: {
+    dateEnrollment:{
+        type: String,
+        default: Date.now
+    },
+    methodPayment:{
+        type: String,
+        default: 'paypal'
+    },
+
+    status:{
         type: String,
         default: 'pending'
     },
-    total: {
+    amount:{
         type: Number,
         default: 0
-    },
+    }
+
+
 
 }, { timestamps: true });
 

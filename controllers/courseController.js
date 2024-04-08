@@ -48,7 +48,8 @@ const getCourse = async (req, res, next) => {
         const course = await Courses.findById(req.params.id);
 
         if (!course) {
-            res.status(404).json({ message: "Course not found" });
+            const error = new Error("No se encontro el curso");
+            return res.status(404).json({ message: error.message });
         }
         return res.json(course);
 

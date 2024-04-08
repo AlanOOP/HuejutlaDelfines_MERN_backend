@@ -27,7 +27,7 @@ const getUsers = async (req, res) => {
 
 const getProfile = async (req, res) => {
     const { user } = req;
-    console.log(user.id);
+
     res.json({ user });
 }
 
@@ -35,17 +35,18 @@ const getProfile = async (req, res) => {
 // Obtener un usuario por id y buscar estudiante populate user 
 
 const getUserProfile = async (req, res) => {
-    const { id } = req.body;
+    const { id } = req.params;
     try {
-        const studentExist = await Student.findOne({ user: id }).populate('user');
-        if (!studentExist) {
-            const error = new Error("El usuario no existe");
-            return res.status(400).json(error.message);
-        }
-        res.json(studentExist);
+        const user = await Users.findById(id);
+        const student = await Student.findOne({ user: user._id });
+
+        res.json(student);
+
     } catch (error) {
-        console.log(error);
+        // console.log(error);
+        res.status(500).json({ message: "Server Error" });
     }
+
 }
 
 // Agregar un usuario
@@ -233,7 +234,7 @@ const singUp = async (req, res) => {
 //olvide password 
 
 const forgotPassword = async (req, res) => {
-    // console.log(req.body);
+    console.log(req.body);
     try {
         const { email } = req.body;
         //Comprobar si el usuario existe
@@ -247,10 +248,11 @@ const forgotPassword = async (req, res) => {
         user.token = generateToken();
         await user.save();
 
+        const student = await Student.findOne({ user: user._id });
         //Enviar email
         const datos = {
             email: user.email,
-            nombre: user.name,
+            nombre: student.name,
             token: user.token,
         };
 
@@ -260,7 +262,7 @@ const forgotPassword = async (req, res) => {
 
 
     } catch (error) {
-        // console.log(error);
+        console.log(error);
         res.status(500).json({ message: "Hubo un error" });
     }
 

@@ -1,21 +1,28 @@
 import mongoose from "mongoose";
 
-const paymentSchema = mongoose.Schema({
-    id_user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Users"
-    },
-    id_course: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Courses"
-    },
-    date: {
-        type: Date,
+const paymentsSchema = mongoose.Schema({
+    paymentDate: {
+        type: String,
         default: Date.now
     },
-    amount: {
+    paymentMethod: {
+        type: String,
+        default: 'paypal'
+    },
+    amount:{
         type: Number,
         default: 0
+    },
+    referenceNumber:{
+        type: String,
+        default: ''
+    },
+    enrrollment:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Enrollments'
     }
-}, { timestamps: true }
-);
+
+}, { timestamps: true });
+
+const Payments = mongoose.model('Payments', paymentsSchema);
+export default Payments;

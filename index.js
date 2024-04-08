@@ -8,9 +8,11 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
 //routes 
-import courseRoutes from "./routes/courseRoutes.js"
-import userRoutes from "./routes/usersRoutes.js"
-import instructorRoutes from "./routes/instructorRoutes.js"
+import courseRoutes from "./routes/courseRoutes.js";
+import userRoutes from "./routes/usersRoutes.js";
+import instructorRoutes from "./routes/instructorRoutes.js";
+import studentRoutes from "./routes/studentRoutes.js";
+import enrollmentRoutes from "./routes/enrollmentRoutes.js"
 
 const app = express();
 
@@ -55,6 +57,8 @@ conectDB();
 app.use("/api", courseRoutes);
 app.use("/api", userRoutes);
 app.use("/api", instructorRoutes);
+app.use("/api", studentRoutes);
+app.use("/api", enrollmentRoutes);
 
 const PORT = process.env.PORT || 3000;
 
