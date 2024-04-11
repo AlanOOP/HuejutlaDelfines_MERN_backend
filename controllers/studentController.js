@@ -41,6 +41,11 @@ const getStudentByUser = async (req, res) => {
 
     //log de prueba ip, navegador, hora de peticion, localizacion
 
+    if (!id) {
+        const error = new Error("No se encontro el usuario");
+        return res.status(404).json(error.message);
+    }
+
     try {
         const userExist = await Users.findById(id);
         if (!userExist) {
