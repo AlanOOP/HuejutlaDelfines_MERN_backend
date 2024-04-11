@@ -8,7 +8,7 @@ import { generateReference } from "../helpers/generateReference.js";
 
 const getEnrollments = async (req, res) => {
     try {
-        const enrollments = await Enrollments.find().populate("user").populate("course");
+        const enrollments = await Enrollments.find().populate("course");
         res.json(enrollments);
     } catch (error) {
         console.log(error);
@@ -19,7 +19,6 @@ const getEnrollments = async (req, res) => {
 // Get single enrollment
 
 const getEnrollment = async (req, res) => {
-
     try {
         const enrollment = await Enrollments.findById(req.params.id);
 
@@ -92,9 +91,30 @@ const createEnrollment = async (req, res) => {
 
 }
 
+//getenrollmentbycourse
+
+const getEnrollmentByCourse = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        if (!id) {
+            const error = new Error('Id Requerido');
+            return res.status(400).json(error.message);
+        }
+
+        const enrollments = await Enrollments.find({ course: id }).populate("student");
+
+        res.json(enrollments);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Server Error" });
+    }
+}
+
 
 export {
     getEnrollments,
     getEnrollment,
-    createEnrollment
+    createEnrollment,
+    getEnrollmentByCourse
 }

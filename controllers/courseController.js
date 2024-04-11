@@ -43,7 +43,7 @@ const getCourses = async (req, res) => {
 
 // Get single course
 
-const getCourse = async (req, res, next) => {
+const getCourse = async (req, res) => {
     try {
         const course = await Courses.findById(req.params.id);
 

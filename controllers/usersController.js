@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import Users from "../models/Users.js";
 import Student from "../models/Student.js";
+import Logs from "../models/Logs.js";
 import { generateToken } from "../helpers/generateToken.js";
 import generarJWT from "../helpers/generateJWT.js";
 import { generateOTP } from "../helpers/generateOTP.js";
@@ -168,9 +169,6 @@ const singUp = async (req, res) => {
             return res.status(400).json(error.message);
         }
 
-        // if (userExist.blockExpires > Date.now()) {
-        // //     userExist.isBlocked = false;
-        // // }
 
         //comprobar si el usuarios esta bloqueado 
 
@@ -188,6 +186,7 @@ const singUp = async (req, res) => {
             if (userExist.loginAttempts >= 5) {
                 userExist.isBlocked = true;
                 userExist.blockExpires = new Date(Date.now() + 60 * 60 * 1000);
+                await userExist.save();
 
                 const datos = {
                     email: userExist.email,
@@ -197,6 +196,19 @@ const singUp = async (req, res) => {
 
                 await userAttemps(datos);
                 await adminAttemps(datos);
+
+                //log de prueba ip, navegador, hora de peticion, localizacion
+
+                const logs = new Logs({
+                    ip: req.ip,
+                    navegador: req.headers['user-agent'],
+                    description: "Usuario bloqueado",
+                    url: "/singUp",
+                    user: userExist._id,
+                });
+
+                await logs.save();
+
             }
 
             await userExist.save();
@@ -207,6 +219,8 @@ const singUp = async (req, res) => {
         userExist.loginAttempts = 0;
         userExist.isBlocked = false;
 
+        await userExist.save();
+
         //Generar JWT
 
         const token = generarJWT(userExist.id);
@@ -216,12 +230,24 @@ const singUp = async (req, res) => {
                 id: userExist.id,
                 name: userExist.name,
                 email: userExist.email,
-                token: token
+                token: token,
+                role: userExist.role,
             },
         };
 
         const encode = jwt.verify(token, process.env.JWT_SECRET);
 
+        //log de inicio de sesión ip, navegador, hora de peticion, localizacion
+
+        const logs = new Logs({
+            ip: req.ip,
+            navegador: req.headers['user-agent'],
+            description: "Inicio de sesión",
+            url: "/singUp",
+            user: userExist._id,
+        });
+
+        await logs.save();
 
         await res.json(payload);
 

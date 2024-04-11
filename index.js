@@ -13,6 +13,9 @@ import userRoutes from "./routes/usersRoutes.js";
 import instructorRoutes from "./routes/instructorRoutes.js";
 import studentRoutes from "./routes/studentRoutes.js";
 import enrollmentRoutes from "./routes/enrollmentRoutes.js"
+import secretQuestionRoutes from "./routes/secretQuestionRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
+import studentEvaluationRoutes from "./routes/studentEvaluationRoutes.js";
 
 const app = express();
 
@@ -59,6 +62,9 @@ app.use("/api", userRoutes);
 app.use("/api", instructorRoutes);
 app.use("/api", studentRoutes);
 app.use("/api", enrollmentRoutes);
+app.use("/api", secretQuestionRoutes);
+app.use("/api", orderRoutes);
+app.use("/api", studentEvaluationRoutes);
 
 const PORT = process.env.PORT || 3000;
 

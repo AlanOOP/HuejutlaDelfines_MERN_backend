@@ -9,13 +9,21 @@ const LogsSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    message: {
+    description: {
+        type: String,
+        required: true
+    },
+    url: {
         type: String,
         required: true
     },
     date: {
         type: Date,
         default: Date.now
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Users'
     }
 });
 
