@@ -16,6 +16,8 @@ import enrollmentRoutes from "./routes/enrollmentRoutes.js"
 import secretQuestionRoutes from "./routes/secretQuestionRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import studentEvaluationRoutes from "./routes/studentEvaluationRoutes.js";
+import monthlyPaymentsRoutes from "./routes/monthlyPaymentRoutes.js";
+import membershipRoutes from "./routes/membershipRoutes.js";
 
 const app = express();
 
@@ -56,6 +58,10 @@ app.use(cors())
 //metodo conexion base de datos
 conectDB();
 
+app.get("/", (req, res) => {
+    res.send("Hola mundo");
+});
+
 //Routing
 app.use("/api", courseRoutes);
 app.use("/api", userRoutes);
@@ -65,13 +71,7 @@ app.use("/api", enrollmentRoutes);
 app.use("/api", secretQuestionRoutes);
 app.use("/api", orderRoutes);
 app.use("/api", studentEvaluationRoutes);
+app.use("/api", monthlyPaymentsRoutes);
+app.use("/api", membershipRoutes);
 
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => {
-    console.log(`Servidor corriendo en el puerto http://localhost:${PORT}`);
-});
-
-app.get("/", (req, res) => {
-    res.send("Hola mundo");
-});
+export default app;

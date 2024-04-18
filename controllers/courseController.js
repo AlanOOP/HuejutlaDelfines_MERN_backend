@@ -73,7 +73,7 @@ const addCourse = async (req, res) => {
         // console.log(title);
         console.log(images);
 
-        if (!title || !description || !category || !images || !price || !offer) {
+        if (!title || !description || !category || !price || !offer) {
             deleteImages(images, "file");
             return res.status(400).json({ message: "Campos Requeridos" });
         }

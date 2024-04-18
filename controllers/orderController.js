@@ -4,6 +4,8 @@ import Payments from '../models/Payments.js';
 import Student from '../models/Student.js';
 import Courses from '../models/Courses.js';
 import { generateReference } from "../helpers/generateReference.js";
+import MonthlyPayment from '../models/MonthlyPayment.js';
+
 
 const createOrder = async (req, res) => {
 
@@ -58,7 +60,7 @@ const createOrder = async (req, res) => {
         const newEnrollment = new Enrollments({
             student: student,
             course: course,
-            dateEnrollment: new Date().getDate() + "/" + new Date().getMonth() + "/" + new Date().getFullYear() + " " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds(),
+            dateEnrollment: new Date().getDate() + "/" + (new Date().getMonth() + 1) + "/" + new Date().getFullYear() + " " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds(),
             amount: amount
         });
 
@@ -70,11 +72,23 @@ const createOrder = async (req, res) => {
         //SAVE PAYMENT
 
         const newPayment = new Payments({
-            paymentDate: new Date().getDate() + "/" + new Date().getMonth() + "/" + new Date().getFullYear() + " " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds(),
+            paymentDate: new Date().getDate() + "/" + (new Date().getMonth() + 1) + "/" + new Date().getFullYear() + " " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds(),
             amount: amount,
             referenceNumber: generateReference(),
             enrollment: newEnrollment._id
         });
+
+        const monthlyPayment = new MonthlyPayment({
+            student: student._id,
+            pagos: [
+                {
+                    fecha: new Date().getDate() + "/" + (new Date().getMonth() + 1) + "/" + new Date().getFullYear(),
+                    monto: amount
+                }
+            ]
+        });
+
+        await monthlyPayment.save();
 
         const payment = await newPayment.save();
 
@@ -120,6 +134,90 @@ const createOrder = async (req, res) => {
 
 }
 
+
+const createMembershipOrder = async (req, res) => {
+
+    const { id_student, fecha, amount } = req.body;
+    console.log(req.body);
+
+    const order = {
+        intent: "CAPTURE",
+        purchase_units: [
+            {
+                amount: {
+                    currency_code: "MXN",
+                    value: amount,
+                },
+            },
+        ],
+        application_context: {
+            brand_name: "Cursos Online",
+            landing_page: "NO_PREFERENCE",
+            user_action: "PAY_NOW",
+            return_url: `${process.env.FRONTEND_URL}/capture-order`,
+            // return_url: `http://localhost:${3000}/api/capture-order`,
+            cancel_url: `${process.env.FRONTEND_URL}/cancel-order`,
+        },
+    }
+
+    try {
+        const student = await Student.findById(id_student);
+
+        if (!student) {
+            const error = new Error("Estudiante no encontrado");
+            return res.status(404).json(error.message);
+        }
+
+        //buscar el monthly payment
+        const monthlyPayment = await MonthlyPayment.findOne({ student: student._id });
+
+        if (!monthlyPayment) {
+            const error = new Error("No se encontro el pago mensual");
+            return res.status(404).json(error.message);
+        }
+
+        monthlyPayment.pagos.push({
+            fecha: fecha,
+            monto: amount
+        });
+
+        await monthlyPayment.save();
+        // format the body
+        const params = new URLSearchParams();
+        params.append("grant_type", "client_credentials");
+
+        // Generate an access token
+        const { data: { access_token }, } = await axios.post(
+            "https://api-m.sandbox.paypal.com/v1/oauth2/token", params,
+            {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                auth: {
+                    username: process.env.PAYPAL_API_CLIENT,
+                    password: process.env.PAYPAL_API_SECRET,
+                },
+            }
+        );
+
+
+
+        const response = await axios.post(`${process.env.PAYPAL_API}/v2/checkout/orders`, order, {
+            headers: {
+                Authorization: `Bearer ${access_token}`,
+                "Content-Type": "application/json",
+            },
+        });
+
+
+        return res.send(response.data);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+
 const captureOrder = async (req, res) => {
     const { token } = req.query;
 
@@ -147,4 +245,4 @@ const cancelOrder = async (req, res) => {
 }
 
 
-export { createOrder, captureOrder, cancelOrder };
+export { createOrder, captureOrder, cancelOrder, createMembershipOrder };
