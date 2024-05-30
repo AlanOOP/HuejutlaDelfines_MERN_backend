@@ -10,7 +10,7 @@ import MonthlyPayment from '../models/MonthlyPayment.js';
 const createOrder = async (req, res) => {
 
     const { id_student, id_course, amount } = req.body;
-    console.log(req.body);
+
 
 
     //inscripcion al curso con paypal 
@@ -138,7 +138,7 @@ const createOrder = async (req, res) => {
 const createMembershipOrder = async (req, res) => {
 
     const { id_student, fecha, amount } = req.body;
-    console.log(req.body);
+   
 
     const order = {
         intent: "CAPTURE",

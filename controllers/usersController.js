@@ -199,15 +199,15 @@ const singUp = async (req, res) => {
 
                 //log de prueba ip, navegador, hora de peticion, localizacion
 
-                const logs = new Logs({
-                    ip: req.ip,
-                    navegador: req.headers['user-agent'],
-                    description: "Usuario bloqueado",
-                    url: "/singUp",
-                    user: userExist._id,
-                });
+                // const logs = new Logs({
+                //     ip: req.ip,
+                //     navegador: req.headers['user-agent'],
+                //     description: "Usuario bloqueado",
+                //     url: "/singUp",
+                //     user: userExist._id,
+                // });
 
-                await logs.save();
+                // await logs.save();
 
             }
 
@@ -239,20 +239,20 @@ const singUp = async (req, res) => {
 
         //log de inicio de sesión ip, navegador, hora de peticion, localizacion
 
-        const logs = new Logs({
-            ip: req.ip,
-            navegador: req.headers['user-agent'],
-            description: "Inicio de sesión",
-            url: "/singUp",
-            user: userExist._id,
-        });
+        // const logs = new Logs({
+        //     ip: req.ip,
+        //     navegador: req.headers['user-agent'],
+        //     description: "Inicio de sesión",
+        //     url: "/singUp",
+        //     user: userExist._id,
+        // });
 
-        await logs.save();
+        // await logs.save();
 
         await res.json(payload);
 
     } catch (error) {
-        // console.log(error);
+        console.log(error);
         res.status(500).json({ message: "Hubo un error" });
     }
 }

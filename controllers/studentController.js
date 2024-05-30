@@ -87,15 +87,15 @@ const updateProfile = async (req, res) => {
         await student.save();
 
         //log de prueba ip, navegador, hora de peticion, localizacion
-        const log = new Logs({
-            ip: req.ip,
-            navegador: req.headers["user-agent"],
-            description: "Actualizacion de perfil",
-            url: "/student/update",
-            user: student.user
-        });
+        // const log = new Logs({
+        //     ip: req.ip,
+        //     navegador: req.headers["user-agent"],
+        //     description: "Actualizacion de perfil",
+        //     url: "/student/update",
+        //     user: student.user
+        // });
 
-        await log.save();
+        // await log.save();
 
         return res.json({ message: "Estudiante actualizado" });
     }
