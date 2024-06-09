@@ -19,6 +19,7 @@ import studentEvaluationRoutes from "./routes/studentEvaluationRoutes.js";
 import monthlyPaymentsRoutes from "./routes/monthlyPaymentRoutes.js";
 import membershipRoutes from "./routes/membershipRoutes.js";
 import scheduleRoutes from './routes/scheduleRoutes.js';
+import notificationRoutes from './routes/notificationRoutes.js';
 
 const app = express();
 
@@ -75,5 +76,6 @@ app.use("/api", studentEvaluationRoutes);
 app.use("/api", monthlyPaymentsRoutes);
 app.use("/api", membershipRoutes);
 app.use("/api", scheduleRoutes);
+app.use("/api", notificationRoutes);
 
 export default app;

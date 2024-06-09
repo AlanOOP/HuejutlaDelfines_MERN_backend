@@ -1,5 +1,6 @@
 import StudentEvaluation from "../models/StudentEvaluation.js";
 import Student from "../models/Student.js";
+import Users from "../models/Users.js"
 
 //get evaluations by student and month and year
 
@@ -22,6 +23,45 @@ export const getEvaluationsByStudent = async (req, res) => {
         res.status(500).json({ message: "Error del servidor" });
     }
 }
+
+
+//get evaluations by user 
+
+export const getEvaluationsByUser = async (req, res) => {
+    const { id } = req.params;
+
+    console.log(id)
+
+    try {
+        //buscar el usuario
+        const userExist = await Users.findById(id);
+
+        if (!userExist) {
+            const error = new Error("Usuario no encontrado");
+            return res.status(404).json(error.message);
+        }
+
+        //buscar los estudiante del usuario by id 
+        const student = await Student.findOne({ user: id });
+
+        if (!student) {
+            const error = new Error("Estudiante no encontrado");
+            return res.status(404).json(error.message);
+        }
+
+        //buscar las evaluaciones del estudiante
+
+        console.log(student)
+        const evaluations = await StudentEvaluation.find({ student: student._id });
+
+        res.json(evaluations);
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Error del servidor" });
+    }
+}
+
 
 //create evaluation
 export const createEvaluation = async (req, res) => {
