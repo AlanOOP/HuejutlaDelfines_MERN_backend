@@ -20,6 +20,7 @@ import monthlyPaymentsRoutes from "./routes/monthlyPaymentRoutes.js";
 import membershipRoutes from "./routes/membershipRoutes.js";
 import scheduleRoutes from './routes/scheduleRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
+import newsRouter from './routes/newsRoutes.js'
 
 const app = express();
 
@@ -77,5 +78,6 @@ app.use("/api", monthlyPaymentsRoutes);
 app.use("/api", membershipRoutes);
 app.use("/api", scheduleRoutes);
 app.use("/api", notificationRoutes);
+app.use("/api", newsRouter);
 
 export default app;
