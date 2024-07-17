@@ -21,6 +21,7 @@ import membershipRoutes from "./routes/membershipRoutes.js";
 import scheduleRoutes from './routes/scheduleRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
 import newsRouter from './routes/newsRoutes.js'
+import datasetRoutes from './routes/datasetRoutes.js'
 
 const app = express();
 
@@ -30,7 +31,6 @@ dotenv.config();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 //body parser
-
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -79,5 +79,6 @@ app.use("/api", membershipRoutes);
 app.use("/api", scheduleRoutes);
 app.use("/api", notificationRoutes);
 app.use("/api", newsRouter);
+app.use("/api", datasetRoutes);
 
 export default app;
