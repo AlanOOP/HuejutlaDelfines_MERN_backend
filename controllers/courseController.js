@@ -9,7 +9,7 @@ import Instructor from '../models/Instructor.js';
 const deleteImages = (images, mode) => {
 
     const __dirname = dirname(fileURLToPath(import.meta.url));
-    let basePath = path.resolve(__dirname + "../../") + "uploads/";
+    let basePath = path.resolve(__dirname + "../../") + "/public/uploads/";
 
     for (let i = 0; i < images.length; i++) {
         let filePath = "";
