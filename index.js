@@ -35,8 +35,8 @@ app.use(express.urlencoded({ extended: false }));
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 //habilitar carpeta publica
-app.use(express.static(path.join(__dirname, "public")));
-app.use(express.static('uploads'));
+app.use(express.static(path.join(__dirname, "public/uploads")));
+// app.use(express.static(path.join(__dirname, "uploads")));
 
 //whitelist 6Tq8lcc6R3gHADll
 

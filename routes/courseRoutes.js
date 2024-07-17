@@ -26,7 +26,8 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 let basePath = path.resolve(__dirname + "../../") + "/public/uploads";
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, process.cwd() + "/uploads");
+        // cb(null, process.cwd() + "/uploads");
+        cb(null, "public/uploads");
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + "_" + file.originalname);
