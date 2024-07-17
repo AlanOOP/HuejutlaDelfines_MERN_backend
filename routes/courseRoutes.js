@@ -17,7 +17,6 @@ import {
 } from '../controllers/courseController.js';
 
 const router = express.Router();
-dotenv.config();
 
 // Configuramos multer
 

@@ -101,7 +101,7 @@ const singIn = async (req, res) => {
         res.json({ message: "Usuario creado correctamente" });
 
     } catch (error) {
-        // console.log(error);
+        console.log(error);
         res.status(500).json({ message: "Server Error" });
     }
 };

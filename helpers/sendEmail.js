@@ -1,7 +1,6 @@
 import nodemailer from "nodemailer";
 import { generateOTP } from "./generateOTP.js";
 
-
 export const emailRegistro = async (datos) => {
   const { email, nombre, token, codeOTP } = datos;
 

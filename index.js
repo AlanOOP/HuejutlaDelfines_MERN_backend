@@ -23,9 +23,10 @@ import notificationRoutes from './routes/notificationRoutes.js';
 import newsRouter from './routes/newsRoutes.js'
 import datasetRoutes from './routes/datasetRoutes.js'
 
+
+
 const app = express();
 
-dotenv.config();
 
 
 app.use(express.json());
@@ -57,7 +58,7 @@ const corsOptions = {
 
 // Configurar CORS
 app.use(cors())
-
+dotenv.config();
 
 //metodo conexion base de datos
 conectDB();
@@ -82,4 +83,8 @@ app.use("/api", notificationRoutes);
 app.use("/api", newsRouter);
 app.use("/api", datasetRoutes);
 
-export default app;
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log(`Servidor corriendo en el puerto http://localhost:${PORT}`);
+});

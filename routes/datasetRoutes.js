@@ -1,12 +1,12 @@
 import express from 'express';
 
 import {
-    getDataset
+    getPreparedDataset
 } from '../controllers/datasetController.js';
 
 const router = express.Router();
 
-router.get('/dataset', getDataset);
+router.get('/dataset', getPreparedDataset);
 
 
 export default router;

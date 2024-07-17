@@ -1,10 +1,13 @@
-import app from "./index.js";
+// import app from "./index.js";
+// import dotenv from "dotenv";
 
-const PORT = process.env.PORT || 3000;
+// dotenv.config();
 
-app.listen(PORT, () => {
-    console.log(`Servidor corriendo en el puerto http://localhost:${PORT}`);
-});
+// const PORT = process.env.PORT || 3000;
+
+// app.listen(PORT, () => {
+//     console.log(`Servidor corriendo en el puerto http://localhost:${PORT}`);
+// });
 
 
-export default app;
+// export default app;
