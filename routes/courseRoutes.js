@@ -1,6 +1,7 @@
 import express from 'express';
 import multer from 'multer';
-
+import path, { dirname } from "path";
+import { fileURLToPath } from 'url';
 // Importamos el controlador
 import {
     addCourse,
@@ -15,11 +16,15 @@ import {
 
 const router = express.Router();
 
+
 // Configuramos multer
 
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+let basePath = path.resolve(__dirname + "../../") + "/public/uploads";
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, "public/uploads");
+        cb(null, basePath);
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + "_" + file.originalname);

@@ -37,6 +37,7 @@ const __dirname = dirname(__filename);
 //habilitar carpeta publica
 app.use(express.static(path.join(__dirname, "public")));
 
+
 //whitelist 6Tq8lcc6R3gHADll
 
 const whitelist = [process.env.FRONTEND_URL];
