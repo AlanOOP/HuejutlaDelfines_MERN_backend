@@ -24,7 +24,6 @@ import newsRouter from './routes/newsRoutes.js'
 import datasetRoutes from './routes/datasetRoutes.js'
 
 
-
 const app = express();
 
 dotenv.config();
