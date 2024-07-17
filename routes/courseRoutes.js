@@ -2,6 +2,8 @@ import express from 'express';
 import multer from 'multer';
 import path, { dirname } from "path";
 import { fileURLToPath } from 'url';
+import fs from "fs";
+import dotenv from "dotenv";
 // Importamos el controlador
 import {
     addCourse,
@@ -15,16 +17,41 @@ import {
 } from '../controllers/courseController.js';
 
 const router = express.Router();
-
+dotenv.config();
 
 // Configuramos multer
 
 
+// const __dirname = dirname(fileURLToPath(import.meta.url));
+// let basePath = path.resolve(__dirname + "../../") + "/public/uploads";
+// var storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//         cb(null, basePath);
+//     },
+//     filename: function (req, file, cb) {
+//         cb(null, Date.now() + "_" + file.originalname);
+//     },
+// });
+
+// Definir el directorio de almacenamiento temporal según el entorno
 const __dirname = dirname(fileURLToPath(import.meta.url));
-let basePath = path.resolve(__dirname + "../../") + "/public/uploads";
+let storageDirectory;
+console.log('console', process.env.NODE_ENV);
+if (process.env.NODE_ENV === 'development') {
+    storageDirectory = path.join(__dirname + "../../", "/public/uploads");
+} else {
+    storageDirectory = '/tmp/uploads';
+}
+
+// Asegúrate de que el directorio existe
+if (!fs.existsSync(storageDirectory)) {
+    fs.mkdirSync(storageDirectory, { recursive: true });
+}
+
+// Configuración de almacenamiento de multer
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, basePath);
+        cb(null, storageDirectory);
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + "_" + file.originalname);
