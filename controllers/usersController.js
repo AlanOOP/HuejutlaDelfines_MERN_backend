@@ -82,6 +82,7 @@ const singIn = async (req, res) => {
             lastName,
             age,
             phone,
+            token: codeOTP,
             user: user._id,
         });
 

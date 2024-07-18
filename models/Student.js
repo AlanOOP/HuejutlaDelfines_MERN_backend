@@ -19,6 +19,10 @@ const studentSchema = mongoose.Schema({
         type: String,
         trim: true
     },
+    token: {
+        type: String,
+        trim: true
+    },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Users"

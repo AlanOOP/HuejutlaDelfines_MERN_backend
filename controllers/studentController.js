@@ -2,6 +2,7 @@
 import Student from "../models/Student.js";
 import Users from "../models/Users.js";
 import Logs from "../models/Logs.js";
+import { generateOTP } from "../helpers/generateOTP.js";
 // Get all students
 
 const getStudents = async (req, res) => {
@@ -70,6 +71,17 @@ const getStudentByUser = async (req, res) => {
 
 }
 
+
+
+//loguear estudiante por otp, 
+
+const loginStudent = async (req, res) => {
+    try {
+
+    } catch (error) {
+        console.log(error);
+    }
+}
 const updateProfile = async (req, res) => {
     const { id } = req.params;
     const { name, lastName, phone } = req.body;
