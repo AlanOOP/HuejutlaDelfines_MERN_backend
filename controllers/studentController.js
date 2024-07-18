@@ -75,8 +75,25 @@ const getStudentByUser = async (req, res) => {
 
 //loguear estudiante por otp, 
 
-const loginStudent = async (req, res) => {
+const loginStudentByOTP = async (req, res) => {
     try {
+
+        const { token } = req.body;
+
+        if (!token) {
+            const error = new Error("Token requerido");
+            return res.status(400).json(error.message);
+        }
+
+        const student = await Student.findOne({ token });
+
+        if (!student) {
+            const error = new Error("Estudiante no encontrado");
+            return res.status(404).json(error.message);
+        }
+
+        return res.json(student);
+
 
     } catch (error) {
         console.log(error);
@@ -123,5 +140,6 @@ export {
     getStudents,
     getStudent,
     getStudentByUser,
-    updateProfile
+    updateProfile,
+    loginStudentByOTP
 }
