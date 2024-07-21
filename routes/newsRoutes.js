@@ -10,20 +10,20 @@ import {
 
 const router = express.Router();
 
-var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, "public/uploads");
-    },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + "_" + file.originalname);
-    },
-});
+const storage = multer.diskStorage({
+    // destination: function (req, file, cb) {
+    //     cb(null, './public/uploads/')
+    // },
+    // filename: function (req, file, cb) {
+    //     cb(null, Math.random() + path.extname(file.originalname))
+    // }
+})
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage });
 
 router.get('/news', getNews);
 router.get('/news/:id', getNewsById);
-router.post('/news', upload.any(), addNews);
+router.post('/news', upload.single('img'), addNews);
 router.put('/news/:id', upload.any(), updateNews);
 router.delete('/news/:id', deleteNews);
 

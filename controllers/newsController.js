@@ -1,6 +1,7 @@
 import News from "../models/News.js";
 import fs from "fs";
 import path, { dirname } from "path";
+import cloudinary from '../helpers/cloudinary.js'
 
 const deleteImages = (images, mode) => {
 
@@ -56,28 +57,39 @@ const getNewsById = async (req, res) => {
 
 const addNews = async (req, res) => {
 
-    const { title, content, date } = req.body;
-    const img = req.files
+    const { title, content, date, isPublished } = req.body;
+    const img = req.file
+
+    console.log(img);
 
     try {
 
-        if (!title || !content || !img || !date) {
+        if (!title || !content || !img || !date || !isPublished) {
             const error = new Error("Por favor rellene todos los campos");
             return res.status(400).json(error.message);
         }
+
+        const result = await cloudinary.uploader.upload(img.path, {
+            folder: 'activities',
+            width: 1200,
+            crop: "scale"
+        });
 
         const newNews = new News({
             title,
             content,
             date,
-            img: img[0].filename
+            url: result.secure_url,
+            public_id: result.public_id,
+            isPublished,
         });
 
         const news = await newNews.save();
 
-        res.status(201).json(news);
+        res.status(200).json(news);
 
     } catch (error) {
+        console.log(error);
         res.status(409).json({ message: error.message });
     }
 }

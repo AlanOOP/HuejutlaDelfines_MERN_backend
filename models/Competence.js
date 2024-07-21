@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const newsSchema = mongoose.Schema({
+const CompetenceSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true
@@ -10,6 +10,10 @@ const newsSchema = mongoose.Schema({
         required: true
     },
     date: {
+        type: String,
+        required: true
+    },
+    place: {
         type: String,
         required: true
     },
@@ -25,9 +29,12 @@ const newsSchema = mongoose.Schema({
         type: Boolean,
         default: true
     }
-}, { timestamps: true }
+}, {
+    timestamps: true
+}
 );
 
-const News = mongoose.model('News', newsSchema);
 
-export default News;
+const Competence = mongoose.model('Competence', CompetenceSchema);
+
+export default Competence;

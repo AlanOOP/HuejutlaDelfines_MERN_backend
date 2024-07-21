@@ -57,13 +57,14 @@ const singIn = async (req, res) => {
         const { name, lastName, password, age, email, phone } = req.body;
 
         //Comprobar si el usuario existe 
+        if (!name || !password || !email || !phone || !age || !lastName) {
+            return res.status(400).json({ message: "Campos Requeridos " });
+        }
         const userExist = await Users.findOne({ email });
+
 
         if (userExist) {
             return res.status(400).json({ message: "El usuario ya existe" });
-        }
-        if (!name || !password || !email || !phone || !age || !lastName) {
-            return res.status(400).json({ message: "Campos Requeridos " });
         }
 
 
@@ -84,6 +85,7 @@ const singIn = async (req, res) => {
             phone,
             token: codeOTP,
             user: user._id,
+            confirm: true
         });
 
         await student.save();
@@ -96,7 +98,7 @@ const singIn = async (req, res) => {
             codeOTP: user.codeOTP,
         };
 
-        await emailRegistro(datos);
+        // await emailRegistro(datos);
 
         await user.save();
         res.json({ message: "Usuario creado correctamente" });

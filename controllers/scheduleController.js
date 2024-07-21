@@ -24,11 +24,72 @@ const createSchedule = async (req, res) => {
 
     try {
         await newSchedule.save();
-        res.status(201).json(newSchedule);
+        res.status(200).json(newSchedule);
     } catch (error) {
-        res.status(409).json({ message: error.message });
+        res.status(500).json({ message: error.message });
     }
 }
 
+const updateSchedule = async (req, res) => {
+    const { id } = req.params;
+    const { day, hour } = req.body;
 
-export { getSchedules, getSchedulesHour7, createSchedule };
+    try {
+        if (!id) {
+            const error = new Error('No se ha encontrado el id');
+            return res.status(404).json(error.message);
+        }
+
+        const schedule = await Schedule.findById(id);
+
+        if (!schedule) {
+            const error = new Error('No se ha encontrado el horario');
+            return res.status(404).json(error.message);
+        }
+
+        schedule.day = day;
+        schedule.hour = hour;
+
+        await schedule.save();
+
+        res.status(200).json(schedule);
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: error.message });
+    }
+}
+
+const deleteSchedule = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        if (!id) {
+            const error = new Error('No se ha encontrado el id');
+            return res.status(404).json(error.message);
+        }
+
+        const schedule = await Schedule.findById(id);
+
+        if (!schedule) {
+            const error = new Error('No se ha encontrado el horario');
+            return res.status(404).json(error.message);
+        }
+
+        await Schedule.findByIdAndDelete(id);
+
+        res.status(200).json({ message: 'Horario eliminado' });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: error.message });
+    }
+}
+
+export {
+    getSchedules,
+    getSchedulesHour7,
+    createSchedule,
+    updateSchedule,
+    deleteSchedule
+};
