@@ -77,6 +77,7 @@ const singIn = async (req, res) => {
         user.token = generateToken();
         user.password = bcrypt.hashSync(password, 10);
         user.codeOTP = codeOTP;
+        user.confirm = true;
 
         const student = new Student({
             name,
@@ -85,7 +86,7 @@ const singIn = async (req, res) => {
             phone,
             token: codeOTP,
             user: user._id,
-            confirm: true
+
         });
 
         await student.save();
