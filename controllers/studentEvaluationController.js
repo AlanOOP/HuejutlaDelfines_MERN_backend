@@ -65,6 +65,37 @@ export const getEvaluationsByUser = async (req, res) => {
     }
 }
 
+export const getEvaluationsByStudentFive = async (req, res) => {
+    const { id } = req.params;
+
+    console.log(id)
+
+    try {
+        
+        //buscar los estudiante del usuario by id 
+        
+        const student = await Student.findById(id);
+
+        if (!student) {
+            const error = new Error("Estudiante no encontrado");
+            return res.status(404).json(error.message);
+        }
+
+        //buscar las evaluaciones del estudiante
+
+        // console.log(student)
+        const evaluations = await StudentEvaluation.find({ student: student._id })
+            .sort({ createdAt: -1 })  // Ordena por fecha de creación en orden descendente
+            .limit(5);
+
+        res.json(evaluations);
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Error del servidor" });
+    }
+}
+
 
 //create evaluation
 export const createEvaluation = async (req, res) => {
