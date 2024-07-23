@@ -25,6 +25,7 @@ export const getEvaluationsByStudent = async (req, res) => {
 }
 
 
+
 //get evaluations by user 
 
 export const getEvaluationsByUser = async (req, res) => {
@@ -51,8 +52,10 @@ export const getEvaluationsByUser = async (req, res) => {
 
         //buscar las evaluaciones del estudiante
 
-        console.log(student)
-        const evaluations = await StudentEvaluation.find({ student: student._id });
+        // console.log(student)
+        const evaluations = await StudentEvaluation.find({ student: student._id })
+            .sort({ createdAt: -1 })  // Ordena por fecha de creación en orden descendente
+            .limit(5);
 
         res.json(evaluations);
 

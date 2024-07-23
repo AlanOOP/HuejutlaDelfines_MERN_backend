@@ -79,14 +79,13 @@ const singIn = async (req, res) => {
         user.codeOTP = codeOTP;
         user.confirm = true;
 
-        const student = new Student({
+        const student = await new Student({
             name,
             lastName,
             age,
             phone,
             token: codeOTP,
             user: user._id,
-
         });
 
         await student.save();
@@ -260,6 +259,9 @@ const singUp = async (req, res) => {
         res.status(500).json({ message: "Hubo un error" });
     }
 }
+
+//
+
 
 //olvide password 
 

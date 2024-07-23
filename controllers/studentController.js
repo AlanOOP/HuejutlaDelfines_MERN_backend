@@ -72,7 +72,6 @@ const getStudentByUser = async (req, res) => {
 }
 
 
-
 //loguear estudiante por otp, 
 
 const loginStudentByOTP = async (req, res) => {
