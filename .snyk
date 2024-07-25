@@ -1,0 +1,55 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.25.1
+ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  'npm:debug:20170905':
+    - swagger > mocha > debug:
+        patched: '2024-05-30T19:09:13.525Z'
+        id: 'npm:debug:20170905'
+        path: swagger > mocha > debug
+    - swagger > swagger-tools > debug:
+        patched: '2024-05-30T19:09:13.525Z'
+        id: 'npm:debug:20170905'
+        path: swagger > swagger-tools > debug
+    - swagger > swagger-tools > body-parser > debug:
+        patched: '2024-05-30T19:09:13.525Z'
+        id: 'npm:debug:20170905'
+        path: swagger > swagger-tools > body-parser > debug
+  'npm:extend:20180424':
+    - swagger > swagger-tools > superagent > extend:
+        patched: '2024-05-30T19:09:13.525Z'
+        id: 'npm:extend:20180424'
+        path: swagger > swagger-tools > superagent > extend
+  'npm:lodash:20180130':
+    - swagger > lodash:
+        patched: '2024-05-30T19:09:13.525Z'
+        id: 'npm:lodash:20180130'
+        path: swagger > lodash
+    - swagger > inquirer > lodash:
+        patched: '2024-05-30T19:09:13.525Z'
+        id: 'npm:lodash:20180130'
+        path: swagger > inquirer > lodash
+  'npm:mime:20170907':
+    - swagger > swagger-tools > superagent > mime:
+        patched: '2024-05-30T19:09:13.525Z'
+        id: 'npm:mime:20170907'
+        path: swagger > swagger-tools > superagent > mime
+  'npm:minimatch:20160620':
+    - swagger > mocha > glob > minimatch:
+        patched: '2024-05-30T19:09:13.525Z'
+        id: 'npm:minimatch:20160620'
+        path: swagger > mocha > glob > minimatch
+  'npm:ms:20170412':
+    - swagger > mocha > debug > ms:
+        patched: '2024-05-30T19:09:13.525Z'
+        id: 'npm:ms:20170412'
+        path: swagger > mocha > debug > ms
+    - swagger > swagger-tools > debug > ms:
+        patched: '2024-05-30T19:09:13.525Z'
+        id: 'npm:ms:20170412'
+        path: swagger > swagger-tools > debug > ms
+    - swagger > swagger-tools > body-parser > debug > ms:
+        patched: '2024-05-30T19:09:13.525Z'
+        id: 'npm:ms:20170412'
+        path: swagger > swagger-tools > body-parser > debug > ms
