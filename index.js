@@ -24,8 +24,8 @@ import newsRouter from './routes/newsRoutes.js'
 import datasetRoutes from './routes/datasetRoutes.js';
 import galeryRoutes from './routes/galeryRoutes.js';
 import faqRoutes from './routes/faqRoutes.js';
-import competence from "./routes/competenceRoutes.js";
-
+import competenceRoutes from "./routes/competenceRoutes.js";
+import commentsRoutes from './routes/commentsRoutes.js';
 
 const app = express();
 
@@ -85,7 +85,8 @@ app.use("/api", newsRouter);
 app.use("/api", datasetRoutes);
 app.use("/api", galeryRoutes);
 app.use("/api", faqRoutes);
-app.use("/api", competence);
+app.use("/api", competenceRoutes);
+app.use("/api", commentsRoutes);
 
 const PORT = process.env.PORT || 3000;
 

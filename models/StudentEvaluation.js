@@ -29,9 +29,13 @@ const studentEvaluationSchema = mongoose.Schema({
     month: {
         type: String,
         required: true
-    }
-
-
+    },
+    weight: {
+        type: Number,
+    },
+    height: {
+        type: Number,
+    },
 }, { timestamps: true });
 
 

@@ -26,6 +26,12 @@ const studentSchema = mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Users"
+    },
+    height: {
+        type: Number,
+    },
+    weight: {
+        type: Number,
     }
 })
 

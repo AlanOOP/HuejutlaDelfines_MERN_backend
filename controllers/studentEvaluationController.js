@@ -1,8 +1,19 @@
 import StudentEvaluation from "../models/StudentEvaluation.js";
 import Student from "../models/Student.js";
 import Users from "../models/Users.js"
+import { calculateAge, generateHeightWeight } from "../helpers/generateHeightAndWeight.js";
 
 //get evaluations by student and month and year
+
+export const getStudenEvaluations = async (req, res) => {
+    try {
+        const evaluations = await StudentEvaluation.find();
+        res.json(evaluations);
+    } catch (error) {
+        console.log(error);
+    }
+
+}
 
 export const getEvaluationsByStudent = async (req, res) => {
     const { studentId } = req.params;
@@ -71,9 +82,9 @@ export const getEvaluationsByStudentFive = async (req, res) => {
     console.log(id)
 
     try {
-        
+
         //buscar los estudiante del usuario by id 
-        
+
         const student = await Student.findById(id);
 
         if (!student) {
@@ -105,19 +116,55 @@ export const createEvaluation = async (req, res) => {
         const student = await Student.findById(studentId);
         if (!student) {
             const error = new Error("Estudiante no encontrado");
-            return res.status(404).json(error.message);
+            return res.status(404).json({ message: error.message });
         }
 
-        //Verificar la fehca que no exista
+        const age = calculateAge(student.age);
+
+        console.log(age)
+
+        let { height, weight } = student;
+
+        // Verificar que la evaluación no exista para la fecha
         const evaluationExist = await StudentEvaluation.findOne({ student: studentId, date });
         if (evaluationExist) {
             const error = new Error("Ya existe una evaluación para esta fecha");
-            return res.status(400).json(error.message);
+            return res.status(400).json({ message: error.message });
+        }
+
+        if (!height || !weight) {
+            const hw = generateHeightWeight(age);
+            height = hw.height;
+            weight = hw.weight;
+
+            student.height = height;
+            student.weight = weight;
+
+            await student.save();
+        }
+
+
+
+        // Validar que la distancia y el tiempo sean valores positivos y razonables
+        if (distance <= 0) {
+            return res.status(400).json({ message: "La distancia debe ser un valor positivo" });
+        }
+        if (time <= 0) {
+            return res.status(400).json({ message: "El tiempo debe ser un valor positivo" });
         }
 
         const evaluation = new StudentEvaluation({
-            student: studentId, trainingType, date, time, distance, year, month
+            student: studentId,
+            trainingType,
+            date,
+            time,
+            distance,
+            year,
+            month,
+            weight: weight,
+            height: height
         });
+
         await evaluation.save();
         res.json(evaluation);
     } catch (error) {

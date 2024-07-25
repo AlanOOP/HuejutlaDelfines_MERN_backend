@@ -14,6 +14,8 @@ const checkAuth = async (req, res, next) => {
         "-password -confirm -token -createdAt -updatedAt -__v"
       );
 
+      
+
       return next();
     } catch (error) {
       return res.status(404).json({ msg: "Hubo un error" });

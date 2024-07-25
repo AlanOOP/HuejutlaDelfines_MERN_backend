@@ -29,6 +29,7 @@ const getUsers = async (req, res) => {
 const getProfile = async (req, res) => {
     const { user } = req;
 
+
     res.json({ user });
 }
 
