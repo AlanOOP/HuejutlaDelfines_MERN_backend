@@ -50,10 +50,10 @@ const createEnrollment = async (req, res) => {
             return res.status(404).json(error.message);
         }
 
-        if (course.cupos === 0) {
-            const error = new Error("No hay cupos disponibles");
-            return res.status(404).json(error.message);
-        }
+        // if (course.cupos === 0) {
+        //     const error = new Error("No hay cupos disponibles");
+        //     return res.status(404).json(error.message);
+        // }
 
         const enrollmentExist = await Enrollments.findOne({ student: student._id });
 

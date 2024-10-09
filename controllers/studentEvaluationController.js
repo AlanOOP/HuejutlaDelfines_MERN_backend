@@ -6,13 +6,18 @@ import { calculateAge, generateHeightWeight } from "../helpers/generateHeightAnd
 //get evaluations by student and month and year
 
 export const getStudenEvaluations = async (req, res) => {
+    //calcula la edad del estudiante
     try {
         const evaluations = await StudentEvaluation.find();
-        res.json(evaluations);
-    } catch (error) {
-        console.log(error);
-    }
 
+        //retornar la edad del estudiante
+
+        res.json(evaluations);
+
+
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 export const getEvaluationsByStudent = async (req, res) => {
@@ -97,7 +102,7 @@ export const getEvaluationsByStudentFive = async (req, res) => {
         // console.log(student)
         const evaluations = await StudentEvaluation.find({ student: student._id })
             .sort({ createdAt: -1 })  // Ordena por fecha de creación en orden descendente
-            .limit(5);
+
 
         res.json(evaluations);
 
@@ -143,6 +148,16 @@ export const createEvaluation = async (req, res) => {
             await student.save();
         }
 
+        if (height === 0 || weight === 0) {
+            const hw = generateHeightWeight(age);
+            height = hw.height;
+            weight = hw.weight;
+
+            student.height = height;
+            student.weight = weight;
+
+            await student.save();
+        }
 
 
         // Validar que la distancia y el tiempo sean valores positivos y razonables

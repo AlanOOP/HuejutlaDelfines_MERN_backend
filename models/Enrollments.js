@@ -29,7 +29,6 @@ const enrollmentsSchema = mongoose.Schema({
     }
 
 
-
 }, { timestamps: true });
 
 const Enrollments = mongoose.model('Enrollments', enrollmentsSchema);
