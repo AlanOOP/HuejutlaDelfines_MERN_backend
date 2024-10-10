@@ -1,4 +1,5 @@
 import Notification from "../models/Notification.js";
+import { Expo } from 'expo-server-sdk';
 
 // get all notifications
 
@@ -55,7 +56,48 @@ export const updateNotification = async (req, res) => {
             title,
             message,
             time
-        })
+        });
+
+        let pushTokens = ['ExponentPushToken[NOE_20DRAkOUMnry6Wezte]'];
+
+        // Iniciar el cliente de Expo para enviar notificaciones
+        let expo = new Expo({ useFcmV1: true });
+
+        // Validar y crear mensajes para los tokens de Expo
+        let messages = [];
+        for (let pushToken of pushTokens) {
+            // Verificar que el token sea válido
+            if (!Expo.isExpoPushToken(pushToken)) {
+                console.error(`Token no válido de Expo: ${pushToken}`);
+                continue;
+            }
+
+            // Crear el mensaje de notificación
+            messages.push({
+                to: pushToken,
+                sound: 'default',
+                title: title,
+                body: message,
+                data: { time },
+            });
+        }
+
+        // Dividir los mensajes en lotes
+        let chunks = expo.chunkPushNotifications(messages);
+        let tickets = [];
+
+        // Enviar los lotes de notificaciones
+        for (let chunk of chunks) {
+            try {
+                let ticketChunk = await expo.sendPushNotificationsAsync(chunk);
+                tickets.push(...ticketChunk);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+
+
 
         res.json({ message: 'Notificación actualizada' });
 
