@@ -4,9 +4,11 @@ import Student from "../models/Student.js";
 import Logs from "../models/Logs.js";
 import { generateToken } from "../helpers/generateToken.js";
 import generarJWT from "../helpers/generateJWT.js";
+import cloudinary from "../helpers/cloudinary.js";
 import { generateOTP } from "../helpers/generateOTP.js";
 import { emailRegistro, emailOlvidePassword, userAttemps, adminAttemps } from "../helpers/sendEmail.js";
 import jwt from "jsonwebtoken";
+import { isValidObjectId } from "mongoose";
 
 // Obtener todos los usuarios
 const getUsers = async (req, res) => {
@@ -323,6 +325,42 @@ const resetPassword = async (req, res) => {
 
 }
 
+// change avatar profile
+
+const changeAvatar = async (req, res) => {
+    const { id } = req.params;
+    const img = req.file;
+
+    if (!isValidObjectId(id)) {
+        return res.status(400).json({ message: "El id no es valido" });
+    }
+
+    if (!img) {
+        return res.status(400).json({ message: "Por favor suba una imagen" });
+    }
+
+    try {
+        const user = await Users.findById(id);
+        if (!user) {
+            return res.status(400).json({ message: "El usuario no existe" });
+        }
+
+        const result = await cloudinary.uploader.upload(img.path, {
+            folder: 'avatar',
+            width: 1200,
+            crop: "scale"
+        });
+
+        user.avatar = result.secure_url;
+        await user.save();
+        res.json({ message: "Avatar actualizado correctamente" });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Hubo un error" });
+    }
+}
+
 export {
     getUsers,
     singIn,
@@ -332,5 +370,6 @@ export {
     confirmar,
     verifyOTP,
     getProfile,
-    getUserProfile
-};
+    getUserProfile,
+    changeAvatar,
+}

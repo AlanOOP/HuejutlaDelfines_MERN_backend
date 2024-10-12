@@ -9,10 +9,17 @@ import {
     confirmar,
     verifyOTP,
     getProfile,
-    getUserProfile
+    getUserProfile,
+    changeAvatar,
 } from '../controllers/usersController.js';
+import multer from 'multer';
+
 
 const router = express.Router();
+
+const storage = multer.diskStorage({});
+
+const upload = multer({ storage });
 
 router.get('/users', getUsers);
 router.post('/singUp', singUp);
@@ -23,5 +30,6 @@ router.get("/confirm/:token", confirmar);
 router.post("/otp-verification", verifyOTP);
 router.get("/user/profile", checkAuth, getProfile);
 router.get("/user/:id", getUserProfile);
+router.post("/user/avatar/:id", upload.single('img'), changeAvatar);
 
 export default router;

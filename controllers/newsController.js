@@ -60,8 +60,6 @@ const addNews = async (req, res) => {
     const { title, content, date, isPublished } = req.body;
     const img = req.file
 
-    console.log(img);
-
     try {
 
         if (!title || !content || !img || !date || !isPublished) {

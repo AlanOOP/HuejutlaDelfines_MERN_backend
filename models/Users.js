@@ -29,7 +29,7 @@ const userSchema = mongoose.Schema({
     },
     avatar: {
         type: String,
-        default: "avatar.png"
+        default: "https://res.cloudinary.com/dxpbz65ha/image/upload/v1728767537/tkekgusmegtzqkcmnigp.png"
     },
     loginAttempts: {
         type: Number,
