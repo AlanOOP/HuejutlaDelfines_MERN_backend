@@ -57,7 +57,7 @@ export const updateNotification = async (req, res) => {
             time
         });
 
-        let pushTokens = ['ExponentPushToken[EZOPr6IPtZ_0Xls76zDn9u]'];
+        let pushTokens = ['ExponentPushToken[NOE_20DRAkOUMnry6Wezte]'];
 
         // Iniciar el cliente de Expo para enviar notificaciones
         let expo = new Expo({ useFcmV1: true });
