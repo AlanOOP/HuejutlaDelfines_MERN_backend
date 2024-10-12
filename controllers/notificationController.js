@@ -43,10 +43,9 @@ export const addNotification = async (req, res) => {
 }
 
 export const updateNotification = async (req, res) => {
+    
     try {
-
-        const { title, message, time } = req.body
-
+        const { title, message, time } = req.body;
         if (!title || !message || !time) {
             const error = new Error('Por favor complete todos los campos');
             return res.status(400).json(error.message);
@@ -58,7 +57,7 @@ export const updateNotification = async (req, res) => {
             time
         });
 
-        let pushTokens = ['ExponentPushToken[NOE_20DRAkOUMnry6Wezte]'];
+        let pushTokens = ['ExponentPushToken[EZOPr6IPtZ_0Xls76zDn9u]'];
 
         // Iniciar el cliente de Expo para enviar notificaciones
         let expo = new Expo({ useFcmV1: true });
@@ -95,9 +94,6 @@ export const updateNotification = async (req, res) => {
                 console.error(error);
             }
         }
-
-
-
 
         res.json({ message: 'Notificación actualizada' });
 
