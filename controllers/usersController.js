@@ -331,6 +331,8 @@ const changeAvatar = async (req, res) => {
     const { id } = req.params;
     const img = req.file;
 
+    
+
     if (!isValidObjectId(id)) {
         return res.status(400).json({ message: "El id no es valido" });
     }
