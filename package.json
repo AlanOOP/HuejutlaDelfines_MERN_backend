@@ -7,14 +7,14 @@
   "scripts": {
     "dev": "nodemon server.js",
     "start": "node index.js",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles --forceExit"
   },
   "keywords": [
     "Express",
     "mongo",
     "JWT",
     "cloudinary"
-  ],
+  ], 
   "author": "Alan Alexis, Zuri Anahi",
   "license": "ISC",
   "dependencies": {

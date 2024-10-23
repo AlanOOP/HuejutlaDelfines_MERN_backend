@@ -24,3 +24,5 @@ jobs:
 
     - name: Run tests
       run: node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles
+
+      
