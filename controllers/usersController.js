@@ -161,7 +161,6 @@ const verifyOTP = async (req, res) => {
 const singUp = async (req, res) => {
     const { email, password } = req.body;
 
-
     try {
         //Comprobar si el usuario existe
         const userExist = await Users.findOne({ email });
@@ -241,8 +240,6 @@ const singUp = async (req, res) => {
                 role: userExist.role,
             },
         };
-
-        const encode = jwt.verify(token, process.env.JWT_SECRET);
 
         //log de inicio de sesión ip, navegador, hora de peticion, localizacion
 
