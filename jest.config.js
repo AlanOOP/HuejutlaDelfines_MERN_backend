@@ -1,15 +1,5 @@
 export default {
-    "transform": {},
-    "testEnvironment": "node",
-    "moduleFileExtensions": [
-        "js",
-        "json",
-        "jsx",
-        "ts",
-        "tsx",
-        "node"
-    ],
-    "transform": {
-        "^.+\\.js$": "babel-jest"
-    }
+    testEnvironment: "node",
+    transform: {},
+    moduleFileExtensions: ["js", "json", "mjs", "cjs", "node"]
 };

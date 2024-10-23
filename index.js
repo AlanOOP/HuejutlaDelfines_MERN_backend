@@ -26,6 +26,8 @@ import galeryRoutes from './routes/galeryRoutes.js';
 import faqRoutes from './routes/faqRoutes.js';
 import competenceRoutes from "./routes/competenceRoutes.js";
 import commentsRoutes from './routes/commentsRoutes.js';
+import pushSuscriptionsRoutes from './routes/pushSuscriptionRoutes.js';
+import paymentRoutes from './routes/paymentRoutes.js';
 
 const app = express();
 
@@ -87,9 +89,14 @@ app.use("/api", galeryRoutes);
 app.use("/api", faqRoutes);
 app.use("/api", competenceRoutes);
 app.use("/api", commentsRoutes);
+app.use("/api", pushSuscriptionsRoutes);
+app.use("/api", paymentRoutes);
 
-const PORT = process.env.PORT || 3000;
+// const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-    console.log(`Servidor corriendo en el puerto http://localhost:${PORT}`);
-});
+// app.listen(PORT, () => {
+//     console.log(`Servidor corriendo en el puerto http://localhost:${PORT}`);
+// });
+
+
+export default app;

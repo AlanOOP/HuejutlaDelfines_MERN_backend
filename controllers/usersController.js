@@ -161,6 +161,7 @@ const verifyOTP = async (req, res) => {
 const singUp = async (req, res) => {
     const { email, password } = req.body;
 
+
     try {
         //Comprobar si el usuario existe
         const userExist = await Users.findOne({ email });
@@ -319,7 +320,7 @@ const resetPassword = async (req, res) => {
         await user.save();
         res.json({ message: "Password actualizado correctamente" });
     } catch (error) {
-        // console.log(error);
+        console.log(error);
         res.status(500).json({ message: "Hubo un error" });
     }
 
@@ -331,7 +332,7 @@ const changeAvatar = async (req, res) => {
     const { id } = req.params;
     const img = req.file;
 
-    
+    console.log(req.file)
 
     if (!isValidObjectId(id)) {
         return res.status(400).json({ message: "El id no es valido" });
